@@ -2,6 +2,7 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const bodyParser = require('body-parser');
 const moment = require('moment-timezone');
 
 let mode = process.env.NODE_ENV;
@@ -30,10 +31,19 @@ app.use(morgan(morganFormat, {
 }));
 
 app.use(helmet());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({
+  limit: 4 * 1024 * 1024,
+}));
 
 const {schema} = require('./schema');
+const cors = require('cors');
+const corsOpt = {
+  origin: true,
+  credentials: true
+};
 
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', cors(corsOpt), graphqlHTTP({
   schema,
   graphiql: true
 }));

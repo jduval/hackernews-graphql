@@ -4,6 +4,8 @@
   "main": "app.js",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "graphql": "^0.10.3",
