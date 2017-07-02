@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const config = require('./constants').config.mysql;
+const config = require('./constants').config.mysql[process.env.NODE_ENV];
 
 const connection = mysql.createConnection({
   host: config.host,

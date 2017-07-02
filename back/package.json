@@ -7,9 +7,20 @@
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "graphql": "^0.10.3",
+    "he": "^1.1.1",
+    "helmet": "^3.6.1",
+    "moment-timezone": "^0.5.13",
+    "morgan": "^1.8.2",
     "mysql": "^2.13.0"
   },
   "devDependencies": {
-    "jest": "^20.0.4"
+    "eslint": "^4.1.1",
+    "eslint-plugin-jest": "^20.0.3",
+    "jest": "^20.0.4",
+    "supertest": "^3.0.0"
+  },
+  "scripts": {
+    "start": "node app",
+    "test": "jest"
   }
 }

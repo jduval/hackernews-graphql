@@ -1,55 +1,37 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const moment = require('moment-timezone');
 
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLID,
-  GraphQLString,
-  GraphQLNonNull,
-} = require('graphql');
-
-const mysql = require('./lib/mysql');
-
-const news = new GraphQLObjectType({
-  name: 'News',
-  fields: {
-    id: {
-      type: GraphQLID,
-    },
-    url: {
-      type: new GraphQLNonNull(GraphQLString),
-    }
-  }
-});
-
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'Query',
-    fields: {
-      news: {
-        type: news,
-        args: {
-          id: {
-            type: GraphQLID
-          },
-          url: {
-            type: GraphQLString
-          }
-        },
-        resolve: async (root, { id }) => {
-          const result = await mysql.query({
-            sql: 'select id, url from news where id = ?',
-            args: id
-          });
-          return result[0];
-        }
-      }
-    }
-  })
-});
+let mode = process.env.NODE_ENV;
+if (!mode || mode === 'test') {
+  process.env.NODE_ENV = 'dev';
+  mode = process.env.NODE_ENV;
+}
 
 const app = express();
+
+app.disable('etag');
+app.set('x-powered-by', false);
+
+const morganFormat = ('dev' === mode) ? 'dev' : ':method :url :status :response-time ms - :res[content-length]';
+app.use(morgan(morganFormat, {
+  skip: (req, res) => res.statusCode < 400,
+  stream: {
+    write: str => console.error(moment().tz('Europe/Paris').format() + ': ' + str.replace(/[\r\n]+/g, '')),
+  },
+}));
+app.use(morgan(morganFormat, {
+  skip: (req, res) => res.statusCode >= 400,
+  stream: {
+    write: str => console.info(moment().tz('Europe/Paris').format() + ': ' + str.replace(/[\r\n]+/g, '')),
+  },
+}));
+
+app.use(helmet());
+
+const {schema} = require('./schema');
 
 app.use('/graphql', graphqlHTTP({
   schema,
@@ -57,3 +39,5 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.listen(4000);
+
+exports.app = app;
