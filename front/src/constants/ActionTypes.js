@@ -1,0 +1,8 @@
+export const FETCH_NEWS = 'FETCH_NEWS';
+export const FETCH_NEWS_FAILURE = 'FETCH_NEWS_FAILURE';
+export const ADD_NEWS = 'ADD_NEWS';
+export const ADD_NEWS_FAILURE = 'ADD_NEWS_FAILURE';
+export const UP_VOTE_NEWS = 'UP_VOTE_NEWS';
+export const UP_VOTE_NEWS_FAILURE = 'UP_VOTE_NEWS_FAILURE';
+export const DOWN_VOTE_NEWS = 'DOWN_VOTE_NEWS';
+export const DOWN_VOTE_NEWS_FAILURE = 'DOWN_VOTE_NEWS_FAILURE';
