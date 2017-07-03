@@ -9,12 +9,12 @@ const addNews = async({url}) => {
     sql: 'insert into news values (0, ?, ?, 0, now())',
     args: [url, title]
   });
-  return JSON.stringify({
-    insertId: result.insertId,
+  return {
+    id: result.insertId,
     title,
     url,
-    creationTime: new Date().getTime() / 1000 | 0
-  });
+    creationTime: new Date().getTime() / 1000 | 0,
+  };
 };
 
 const addComment = async({idNews, input}) => {

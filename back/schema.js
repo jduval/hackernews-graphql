@@ -83,7 +83,7 @@ const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     addNews: {
-      type: GraphQLString,
+      type: news,
       args: {
         url: {
           type: GraphQLString
