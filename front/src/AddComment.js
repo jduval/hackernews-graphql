@@ -3,9 +3,9 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {addNews} from './actions/news';
+import {addComment} from './actions/comment';
 
-export class AddNews extends Component {
+export class AddComment extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,47 +16,49 @@ export class AddNews extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.news.error)
+      alert(nextProps.news.error);
+  }
+
   handleChange(event) {
     this.setState({value: event.target.value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.addNews({url: this.state.value});
+    this.props.addComment({
+      value: this.state.value,
+      idNews: this.props.idNews
+    });
   }
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <div>Add a link</div>
-          <button onClick={() => this.props.changePage()}>back to home</button>
-        </div>
-        <div className="App-form">
-          <form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              placeholder="Insert link URL"
-              onChange={this.handleChange}
-              value={this.state.value}
-              />
-            <button type="submit">Add !</button>
-          </form>
-        </div>
+      <div className="comment-form">
+        <form onSubmit={this.handleSubmit}>
+          <textarea
+            placeholder="What's on your mind ?.."
+            onChange={this.handleChange}
+            value={this.state.value}
+            />
+          <button type="submit">Add !</button>
+        </form>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  news: state.news
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  addNews,
+  addComment,
   changePage: () => push('/')
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddNews);
+)(AddComment);

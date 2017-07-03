@@ -3,14 +3,17 @@ import {
   FETCH_NEWS_FAILURE,
   ADD_NEWS,
   ADD_NEWS_FAILURE,
-  UP_VOTE_NEWS,
-  UP_VOTE_NEWS_FAILURE,
-  DOWN_VOTE_NEWS,
-  DOWN_VOTE_NEWS_FAILURE,
+  UPDATE_NEWS,
+  UPDATE_NEWS_FAILURE,
+  ADD_COMMENT,
+  ADD_COMMENT_FAILURE,
+  UPDATE_COMMENT,
+  UPDATE_COMMENT_FAILURE
 } from '../constants/ActionTypes';
 
 const initialState = {
-  data: [],
+  newsIds: [],
+  newsObjs: {},
   error: ''
 };
 
@@ -18,55 +21,106 @@ const news = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_NEWS:
       return {
-        data: action.res.data.allNews
+        newsIds: action.newsIds,
+        newsObjs: action.newsObjs,
       };
     case FETCH_NEWS_FAILURE:
       return {
+        ...initialState,
         error: action.error,
       };
     case ADD_NEWS:
-      const data = JSON.parse(action.res.data.addNews);
       return {
-        data: [
-          ...state.data,
-          {
-            id: data.insertId,
-            title: data.title,
-            url: data.url,
-            creationTime: data.creationTime,
+        newsIds: [
+          ...state.newsIds,
+          action.res.id,
+        ],
+        newsObjs: {
+          ...state.newsObjs,
+          [`id-${action.res.id}`]: {
+            id: action.res.id,
+            title: action.res.title,
+            url: action.res.url,
+            creationTime: action.res.creationTime,
             score: 0,
             comments: [],
           }
-        ]
+        },
+        error: '',
       };
     case ADD_NEWS_FAILURE:
       return {
         ...state,
         error: action.error,
       };
-    case UP_VOTE_NEWS:
-      const newsToUpdate = state.data.find(obj =>
-        obj.id === action.idNews
-      );
-      newsToUpdate.score++;
+    case UPDATE_NEWS:
+      const newsToUpdate = state.newsObjs[`id-${action.idNews}`];
+      if (action.score > 0)
+        newsToUpdate.score++;
+      else
+        newsToUpdate.score--;
       return {
         ...state,
-        data: [
-          ...state.data,
+        newsObjs: {
+          ...state.newsObjs,
           ...newsToUpdate
-        ]
+        }
       };
-    case DOWN_VOTE_NEWS:
-      const newsToUpdate2 = state.data.find(obj =>
-        obj.id === action.idNews
-      );
-      newsToUpdate2.score--;
+    case UPDATE_NEWS_FAILURE:
       return {
         ...state,
-        data: [
-          ...state.data,
-          ...newsToUpdate2
-        ]
+        error: action.res
+      };
+    case ADD_COMMENT:
+      const newsPayload = state.newsObjs[`id-${action.idNews}`];
+      return {
+        ...state,
+        newsObjs: {
+          ...state.newsObjs,
+          [`id-${action.idNews}`]: {
+            ...newsPayload,
+            comments: [
+              ...newsPayload.comments,
+              {
+                id: action.res.data.addComment,
+                text: action.value,
+                creationTime: new Date().getTime() / 1000 | 0,
+                score: 0,
+              }
+            ]
+          }
+        }
+      };
+    case ADD_COMMENT_FAILURE:
+      return {
+        ...state,
+        error: action.res,
+      };
+    case UPDATE_COMMENT:
+      const commentToUpdate = state.newsObjs[`id-${action.idNews}`].comments.find(cmt =>
+        cmt.id === action.idComment
+      );
+      if (action.score > 0)
+        commentToUpdate.score++;
+      else
+        commentToUpdate.score--;
+      return {
+        ...state,
+        newsObjs: {
+          ...state.newsObjs,
+          [`id-${action.idNews}`]: {
+            ...state.newsObjs[`id-${action.idNews}`],
+            comments: [
+              ...state.newsObjs[`id-${action.idNews}`].comments,
+              ...commentToUpdate,
+            ]
+          }
+        }
+      };
+    case UPDATE_COMMENT_FAILURE:
+      return {
+        ...state,
+        error: action.res
       };
     default:
       return state;
