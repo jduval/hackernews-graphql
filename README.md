@@ -2,6 +2,10 @@
 
 ## Prérequis
 
+- node > 7.7
+- yarn > 7.18
+- mysql
+
 Créer la base de donnée MySQL `hackernews`
 
 ```
