@@ -23,6 +23,6 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "jest"
+    "test": "jest --forceExit"
   }
 }
