@@ -3,17 +3,8 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-
 import AddComment from './AddComment';
-
 import {updateScore} from './actions/comment';
-
-const styles = {
-  tdText: {
-    width: 880,
-    textAlign: 'left'
-  }
-};
 
 export class Comment extends Component {
   constructor(props) {
@@ -53,7 +44,7 @@ export class Comment extends Component {
     });
   }
 
-  displayCommentList({comments, idNews}) {
+  renderCommentList({comments, idNews}) {
     return (
       <div className="comment-list">
       <table>
@@ -94,7 +85,7 @@ export class Comment extends Component {
                 </button>
               </td>
               <td>{comment.score}</td>
-              <td style={styles.tdText}>{comment.text}</td>
+              <td className="td-comment-text">{comment.text}</td>
               <td>{moment.unix(comment.creationTime).format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           ))}
@@ -115,7 +106,7 @@ export class Comment extends Component {
           <h2><a href={news.url}>{news.title}</a></h2>
           <button onClick={() => this.props.changePage()}>back to home</button>
         </div>
-        {this.displayCommentList({
+        {this.renderCommentList({
           comments: news.comments,
           idNews: news.id
         })}
