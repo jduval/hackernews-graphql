@@ -24,6 +24,7 @@ describe('News', () => {
           .toHaveProperty('data.addNews.id', expect.anything());
         expect(res.body)
           .toHaveProperty('data.addNews.title', expect.anything());
+        expect(res.body.data.addNews.title).toBe('Apple continues Asia expansion with its first retail store in Taiwan  |  TechCrunch');
         expect(res.body)
           .toHaveProperty('data.addNews.creationTime', expect.any(Number));
         expect(res.body)
