@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  width: 900px;
+  width: 1200px;
   margin: 0 auto;
   padding-top: 5px;
 }
@@ -24,6 +24,7 @@
 
 .App-news {
   background-color: rgb(246, 246, 239);
+  color: #828282;
 }
 
 .App-form {

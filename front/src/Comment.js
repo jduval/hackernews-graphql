@@ -8,6 +8,13 @@ import AddComment from './AddComment';
 
 import {updateScore} from './actions/comment';
 
+const styles = {
+  tdText: {
+    width: 880,
+    textAlign: 'left'
+  }
+};
+
 export class Comment extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +80,7 @@ export class Comment extends Component {
                     idNews,
                     type: 'up'
                   })}>
-                  /\
+                  +
                 </button>
               </td>
               <td>
@@ -83,11 +90,11 @@ export class Comment extends Component {
                     idNews,
                     type: 'down'
                   })}>
-                  \/
+                  -
                 </button>
               </td>
               <td>{comment.score}</td>
-              <td>{comment.text}</td>
+              <td style={styles.tdText}>{comment.text}</td>
               <td>{moment.unix(comment.creationTime).format('YYYY-MM-DD HH:mm:ss')}</td>
             </tr>
           ))}

@@ -9,9 +9,19 @@ import './App.css';
 import {fetchNews, updateScore} from './actions/news';
 
 const styles = {
+  tdComment: {
+    width: 137
+  },
   aComment: {
-    color: 'blue',
     cursor: 'pointer'
+  },
+  tdTitle: {
+    textAlign: 'left',
+    width: 750
+  },
+  aTitle: {
+    color: 'black',
+    textDecoration: 'none'
   }
 };
 
@@ -98,7 +108,7 @@ export class Home extends Component {
                           idNews: news.id,
                           type: 'up'
                         })}>
-                        /\
+                        +
                       </button>
                     </td>
                     <td>
@@ -107,15 +117,21 @@ export class Home extends Component {
                           idNews: news.id,
                           type: 'down'
                         })}>
-                        \/
+                        -
                       </button>
                     </td>
                     <td>{news.score}</td>
-                    <td>
-                      <a href={news.url} target="_blank">{news.title}</a>
+                    <td style={styles.tdTitle}>
+                      <a
+                        href={news.url}
+                        target="_blank"
+                        style={styles.aTitle}
+                        >
+                        {news.title}
+                      </a>
                     </td>
                     <td>{moment.unix(news.creationTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-                    <td>
+                    <td style={styles.tdComment}>
                       <a style={styles.aComment} onClick={() => this.props.getComment(news.id)}>{`[${nbComment} ${nbComment ? 'comments' : 'comment'}]`}</a>
                     </td>
                   </tr>
