@@ -12,7 +12,9 @@ export const addComment = ({value, idNews}) =>
   dispatch =>
     clientAPI({
       body: JSON.stringify({
-        query: `mutation{addComment(idNews:${idNews},input:"${value}")}`
+        query: `mutation{
+          addComment(idNews:${idNews}, input:"${value}")
+        }`
       })
     }).then(processResponse)
       .then(res => dispatch({
@@ -27,7 +29,9 @@ export const updateScore = ({idComment, idNews, type}) =>
   dispatch =>
     clientAPI({
       body: JSON.stringify({
-        query: `mutation{${type}VoteComment(id:"${idComment}")}`
+        query: `mutation{
+          ${type}VoteComment(id:"${idComment}")
+        }`
       })
     }).then(processResponse)
       .then(res => dispatch({

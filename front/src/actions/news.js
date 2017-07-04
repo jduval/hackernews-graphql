@@ -14,7 +14,21 @@ import {clientAPI} from './clientAPI';
 export const fetchNews = () =>
   dispatch =>
     clientAPI({
-      query: 'query={allNews{id,url,title,creationTime,score,comments{id,text,score,creationTime}}}'
+      query: `query={
+        allNews{
+          id,
+          url,
+          title,
+          creationTime,
+          score,
+          comments{
+            id,
+            text,
+            score,
+            creationTime
+          }
+        }
+      }`
     }).then(processResponse)
       .then(res => {
         const newsObjs = {};
@@ -34,7 +48,14 @@ export const addNews = ({url}) =>
   dispatch =>
     clientAPI({
       body: JSON.stringify({
-        query: `mutation{addNews(url:"${url}"){id,url,title,creationTime}}`
+        query: `mutation{
+          addNews(url:"${url}"){
+            id,
+            url,
+            title,
+            creationTime
+          }
+        }`
       })
     }).then(processResponse)
       .then(res => dispatch({
@@ -47,13 +68,14 @@ export const updateScore = ({idNews, type}) =>
   dispatch =>
     clientAPI({
       body: JSON.stringify({
-        query: `mutation{${type}VoteNews(id:"${idNews}")}`
+        query: `mutation{
+          ${type}VoteNews(id:"${idNews}")
+        }`
       })
     }).then(processResponse)
-      .then(res => dispatch({
+      .then(() => dispatch({
         type: UPDATE_NEWS,
         score: type === 'up' ? 1 : -1,
-        res,
         idNews,
       }))
       .catch(error => handleActionError(dispatch, error, UPDATE_NEWS_FAILURE));

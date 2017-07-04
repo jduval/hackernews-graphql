@@ -63,7 +63,6 @@ const news = (state = initialState, action) => {
         ...state,
         newsObjs: {
           ...state.newsObjs,
-          ...newsToUpdate
         }
       };
     case UPDATE_NEWS_FAILURE:
@@ -112,7 +111,6 @@ const news = (state = initialState, action) => {
             ...state.newsObjs[`id-${action.idNews}`],
             comments: [
               ...state.newsObjs[`id-${action.idNews}`].comments,
-              ...commentToUpdate,
             ]
           }
         }

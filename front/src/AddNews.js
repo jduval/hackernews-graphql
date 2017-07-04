@@ -16,6 +16,12 @@ export class AddNews extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // news successfully added, redirect to home.
+    if (nextProps.news.newsIds.length > this.props.news.newsIds.length)
+      this.props.changePage();
+  }
+
   handleChange(event) {
     this.setState({value: event.target.value});
   }
@@ -49,6 +55,7 @@ export class AddNews extends Component {
 }
 
 const mapStateToProps = state => ({
+  news: state.news,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

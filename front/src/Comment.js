@@ -48,7 +48,7 @@ export class Comment extends Component {
 
   displayCommentList({comments, idNews}) {
     return (
-      <div>
+      <div className="comment-list">
       <table>
         <tbody>
           <tr>

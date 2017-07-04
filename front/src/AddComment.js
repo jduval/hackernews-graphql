@@ -31,6 +31,7 @@ export class AddComment extends Component {
       value: this.state.value,
       idNews: this.props.idNews
     });
+    this.setState({value: ''});
   }
 
   render() {
@@ -42,6 +43,7 @@ export class AddComment extends Component {
             onChange={this.handleChange}
             value={this.state.value}
             />
+          <br />
           <button type="submit">Add !</button>
         </form>
       </div>

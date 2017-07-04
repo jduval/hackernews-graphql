@@ -11,8 +11,16 @@ const POST_OPT = {
   },
 };
 
+/**
+ * API client.
+ *
+ * @param {string} query - Get graphql query.
+ * @param {string} body - POST JSON.stringify() of graphql query.
+ *
+ * @return Promise
+ */
 export const clientAPI = ({query, body}) => {
-  const url = query ? `${BASE_URL}?${query}` : BASE_URL;
+  const url = query ? `${BASE_URL}?${query.replace(/\s/g, '')}` : BASE_URL;
   const opt = body ? Object.assign({}, POST_OPT, {body}) : {};
 
   return fetch(url, opt);
